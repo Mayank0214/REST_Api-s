@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import fs = require('fs');
 import { file } from '@babel/types';
-;
+
 
 const db = require("../file.json");
 
@@ -21,14 +21,20 @@ function readFile(filePath = "")  {
 @Injectable()
 export class AppService {
 
-  async doPost( params :any): Promise<any>{
-  
+  async doPost( params : any ): Promise<any>{
+    
     let jsonData;
-  
-    // FILTERING OUT EXISTING RECORDS
+
+   // FILTERING OUT EXISTING RECORDS
     const filter = db.filter( ( e ) =>  e.id === params.id);
     if( filter.length > 0 ) {
       return "Record Already exists";
+    }
+
+    params = {
+      id : parseInt(params.id),
+      firstName : params.firstName,
+      lastName : params.lastName 
     }
 
     db.push( params )
@@ -52,11 +58,11 @@ export class AppService {
   async doPut(params: any): Promise<any>{
     
     let index;
-
+    
     // CHECKING IF ID MATCH EXISTS
     db.forEach( ( e, i) => {
 
-      if( e.id === params.id) {
+      if( e.id === parseInt(params.id)) {
         index = i;
       }
     });
@@ -93,7 +99,7 @@ export class AppService {
      // CHECKING IF ID MATCH EXISTS
     db.forEach( ( e, i) => {
 
-      if( e.id === params.id) {
+      if( e.id === parseInt(params.id)) {
         index = i;
       }
     });
@@ -110,3 +116,4 @@ export class AppService {
   }
 
  }
+

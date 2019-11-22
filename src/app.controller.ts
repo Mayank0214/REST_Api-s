@@ -1,5 +1,23 @@
 import { Controller, Get, Post, Put, Body, Delete, Query } from '@nestjs/common';
 import { AppService } from './app.service';
+import { IsNotEmpty, IsInt, IsOptional, IsString, IsNumberString} from 'class-validator';
+
+export class PostRequestValidationDto {
+ 
+  
+  @IsNumberString()
+  @IsNotEmpty()
+  id : number;
+
+  @IsNotEmpty()
+  @IsString()
+  firstName : string;
+
+  @IsOptional()
+  @IsString()
+  lastName : string;
+  
+ }
 
 
 @Controller()
@@ -12,17 +30,18 @@ export class AppController {
   }
 
  @Post()
- async doPost(@Body() body) {
+ async doPost(@Body() postRequestValidationDto : PostRequestValidationDto) {
    console.log(`Request has reached Post ROUTE`);
+   console.log(typeof(postRequestValidationDto.id));
    
-   return this.appService.doPost(body);
+   return this.appService.doPost(postRequestValidationDto);
  }
 
  @Put()
- async doPut(@Body() body){
+ async doPut(@Body() postRequestValidationDto : PostRequestValidationDto){
    console.log(`Req has reached Put ROUTE`);
    
-   return this.appService.doPut(body);
+   return this.appService.doPut(postRequestValidationDto);
  }
 
  @Delete()
