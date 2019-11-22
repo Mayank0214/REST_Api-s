@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Put, Body, Delete, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 
 
@@ -14,11 +14,10 @@ export class AppController {
    return this.appService.doPost(body);
  }
 
- @Get()
- async doGet(){
-   console.log(`Request has reached`);
-   return this.appService.doGet();
- }
+@Get()
+async doGet(@Query('page') page: number = 0, @Query('limit') limit: number = 10) {
+  return await this.appService.doGet(page, limit);
+}
 
  @Put()
  async doPut(@Body() body){
